@@ -104,3 +104,50 @@ Generate logic triggers, strobes, or timing pulses from host software.
 
 | Stage                    | Time (typical)       |
 |--------------------------|----------------------|
+
+
+# Python Host Script Explanation for USB2GPIO (Timed Pulse Command)
+
+This document explains the structure and functionality of the Python Host Script that communicates with an **nRF52840** USB device to control GPIO pins using HID commands. The script includes features such as setting pins HIGH/LOW, reading multiple pins, grouping pin updates, and a **timed pulse** command.
+
+## **1. Script Overview**
+
+The Python script communicates with a USB device running a custom HID interface. The host sends HID reports to the device, which in turn processes them and controls GPIO pins based on the commands received.
+
+### **Supported Commands:**
+- **CMD_SET_ONE**: Set a pin HIGH.
+- **CMD_CLR_ONE**: Set a pin LOW.
+- **CMD_GROUP_SET**: Set multiple pins to HIGH or LOW.
+- **CMD_READ_MULTI**: Read the state of multiple pins.
+- **CMD_COMBO**: Set some pins and read others in a single command.
+- **CMD_PULSE_ONE**: Pulse a pin HIGH for a specific duration in microseconds.
+
+---
+
+## **2. Script Functions**
+
+### **`send_command(device, cmd, data)`**
+
+This function sends a command to the USB device and waits for a response. It prepares the report by combining the command and data, sends it to the device, and then reads the response.
+
+- **Parameters:**
+  - `device`: The HID device object to send the command to.
+  - `cmd`: The command to be sent to the device.
+  - `data`: The data associated with the command.
+
+- **Returns**: The device’s response to the command.
+
+### **`set_pin_high(device, pin)`**
+
+This function sends the **CMD_SET_ONE** command to set a specific pin HIGH.
+
+- **Parameters**:
+  - `device`: The HID device object.
+  - `pin`: The GPIO pin to be set HIGH.
+
+- **Usage**: This sets the specified pin to a HIGH state.
+
+- **Example**:
+  ```python
+  set_pin_high(device, 13)  # Sets pin 13 HIGH
+
