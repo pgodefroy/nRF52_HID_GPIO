@@ -4,7 +4,7 @@ import hid
 
 # USB Vendor and Product ID (replace with your own values if needed)
 VENDOR_ID = 0x239A
-PRODUCT_ID = 0x8001
+PRODUCT_ID = 0x8029
 
 # Command codes
 CMD_SET_ONE = 0x10
