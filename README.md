@@ -106,8 +106,9 @@ Generate logic triggers, strobes, or timing pulses from host software.
 |--------------------------|----------------------|
 
 
-# Python Host Script Explanation for USB2GPIO
 
+
+# Python Host Script Explanation for USB2GPIO
 
 This document explains the structure and functionality of the Python Host Script that communicates with an **nRF52840** USB device to control GPIO pins using HID commands. The script includes features such as setting pins HIGH/LOW, reading multiple pins, grouping pin updates, and a **timed pulse** command.
 
@@ -151,4 +152,140 @@ This function sends the **CMD_SET_ONE** command to set a specific pin HIGH.
 - **Example**:
   ```python
   set_pin_high(device, 13)  # Sets pin 13 HIGH
+  ```
 
+### **`set_pin_low(device, pin)`**
+
+This function sends the **CMD_CLR_ONE** command to set a specific pin LOW.
+
+- **Parameters**:
+  - `device`: The HID device object.
+  - `pin`: The GPIO pin to be set LOW.
+
+- **Usage**: This sets the specified pin to a LOW state.
+
+- **Example**:
+  ```python
+  set_pin_low(device, 13)  # Sets pin 13 LOW
+  ```
+
+### **`pulse_pin(device, pin, duration_us)`**
+
+This function sends the **CMD_PULSE_ONE** command, which pulses a specified pin HIGH for a given duration in microseconds. After the duration, it sets the pin LOW.
+
+- **Parameters**:
+  - `device`: The HID device object.
+  - `pin`: The GPIO pin to pulse.
+  - `duration_us`: The duration to pulse the pin HIGH in microseconds.
+
+- **Usage**: This will send a timed pulse command to the device. The pin will go HIGH for the specified duration and then go LOW.
+
+- **Example**:
+  ```python
+  pulse_pin(device, 13, 500)  # Pulses pin 13 for 500 microseconds
+  ```
+
+### **`group_set(device, pins_values)`**
+
+This function sends the **CMD_GROUP_SET** command, which allows multiple pins to be set to either HIGH or LOW. It takes a list of tuples, where each tuple contains a pin number and a value (1 for HIGH, 0 for LOW).
+
+- **Parameters**:
+  - `device`: The HID device object.
+  - `pins_values`: A list of tuples where each tuple has the pin number and its value (0 for LOW, 1 for HIGH).
+
+- **Usage**: This command sets the specified pins to the specified values.
+
+- **Example**:
+  ```python
+  group_set(device, [(5, 1), (6, 0)])  # Sets pin 5 HIGH and pin 6 LOW
+  ```
+
+### **`read_pins(device, pins)`**
+
+This function sends the **CMD_READ_MULTI** command to read the state of multiple pins. The function returns the input states of the specified pins.
+
+- **Parameters**:
+  - `device`: The HID device object.
+  - `pins`: A list of pins to read the states of.
+
+- **Usage**: This command reads and returns the states of the specified pins.
+
+- **Example**:
+  ```python
+  read_pins(device, [5, 6, 13])  # Reads the states of pins 5, 6, and 13
+  ```
+
+### **`combo_set_and_read(device, set_mask, read_mask)`**
+
+This function sends the **CMD_COMBO** command, which combines setting the state of some pins and reading the state of others. It takes two masks: one for setting the pins and another for reading the pins.
+
+- **Parameters**:
+  - `device`: The HID device object.
+  - `set_mask`: A 32-bit mask that specifies which pins to set.
+  - `read_mask`: A 32-bit mask that specifies which pins to read.
+
+- **Usage**: This command sets the specified pins (based on the `set_mask`) and reads the input states of the pins (based on the `read_mask`).
+
+- **Example**:
+  ```python
+  combo_set_and_read(device, 0x20, 0x30)  # Sets pin 5 and reads the state of pin 6
+  ```
+
+---
+
+## **3. Example Commands**
+
+### **Setting Pins**
+
+- To set pin 13 HIGH:
+  ```python
+  set_pin_high(device, 13)
+  ```
+- To set pin 13 LOW:
+  ```python
+  set_pin_low(device, 13)
+  ```
+
+### **Pulsing Pins**
+
+- To pulse pin 13 for 500 microseconds:
+  ```python
+  pulse_pin(device, 13, 500)
+  ```
+
+### **Grouping Pin Sets**
+
+- To set pin 5 HIGH and pin 6 LOW:
+  ```python
+  group_set(device, [(5, 1), (6, 0)])
+  ```
+
+### **Reading Pins**
+
+- To read the states of pins 5, 6, and 13:
+  ```python
+  read_pins(device, [5, 6, 13])
+  ```
+
+### **Combo Commands**
+
+- To set pins 5 and 6 HIGH and read pin 6:
+  ```python
+  combo_set_and_read(device, 0x20, 0x30)
+  ```
+
+---
+
+## **4. Usage**
+
+1. **Install the `hid` library**: Make sure you have the `hid` library installed using `pip install hid`.
+2. **Run the script**: Execute the script and it will automatically connect to the USB HID device and perform the operations defined in the `main` function.
+3. **Modify the example commands**: You can modify the `main()` function to test different commands by changing pin numbers and durations.
+
+---
+
+## **5. Conclusion**
+
+This Python host script allows for easy control of GPIO pins on the nRF52840 using USB HID commands. It supports both simple pin control (set HIGH/LOW) and more advanced features like reading pin states, grouped pin updates, and timed pulses. The flexibility of HID commands provides a reliable and efficient way to interface with the device over USB.
+
+If you have any issues or need further modifications, feel free to reach out for assistance.
