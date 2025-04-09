@@ -106,7 +106,8 @@ Generate logic triggers, strobes, or timing pulses from host software.
 |--------------------------|----------------------|
 
 
-# Python Host Script Explanation for USB2GPIO (Timed Pulse Command)
+# Python Host Script Explanation for USB2GPIO
+
 
 This document explains the structure and functionality of the Python Host Script that communicates with an **nRF52840** USB device to control GPIO pins using HID commands. The script includes features such as setting pins HIGH/LOW, reading multiple pins, grouping pin updates, and a **timed pulse** command.
 
