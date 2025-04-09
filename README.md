@@ -288,4 +288,3 @@ This function sends the **CMD_COMBO** command, which combines setting the state 
 
 This Python host script allows for easy control of GPIO pins on the nRF52840 using USB HID commands. It supports both simple pin control (set HIGH/LOW) and more advanced features like reading pin states, grouped pin updates, and timed pulses. The flexibility of HID commands provides a reliable and efficient way to interface with the device over USB.
 
-If you have any issues or need further modifications, feel free to reach out for assistance.
